@@ -50,7 +50,7 @@ export function renderActivityRegister(container, { id }) {
           </div>
           <div class="form-group">
             <label class="form-label">真实姓名 <span class="required">*</span></label>
-            <input class="form-input" type="text" id="real-name" maxlength="20" placeholder="请输入真实姓名">
+            <input class="form-input" type="text" id="real-name" maxlength="20" placeholder="请输入真实姓名" value="${escapeHtml(user.realName || '')}">
             <div class="form-error hidden" id="name-error"></div>
           </div>
           <div class="form-group">

@@ -36,6 +36,17 @@ export function showModal({ title, body, confirmText = '确定', cancelText = '�
   });
 }
 
+export function certReviewBadge(status) {
+  const map = {
+    pending_first: { cls: 'badge-pending', text: '待初审' },
+    pending_second: { cls: 'badge-review', text: '待复审' },
+    approved: { cls: 'badge-open', text: '审核通过' },
+    rejected: { cls: 'badge-rejected', text: '审核驳回' },
+  };
+  const s = map[status] || map.pending_first;
+  return `<span class="badge ${s.cls}">${s.text}</span>`;
+}
+
 export function statusBadge(status) {
   const map = {
     open: { cls: 'badge-open', text: '报名中' },

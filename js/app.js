@@ -15,6 +15,9 @@ import { renderArticleDetail } from './pages/article-detail.js';
 import { renderProfile } from './pages/profile.js';
 import { renderMyRegistrations } from './pages/my-registrations.js';
 import { renderAbout } from './pages/about.js';
+import { renderPersonalInfo } from './pages/personal-info.js';
+import { renderMyCertificates, renderCertificateDetail } from './pages/my-certificates.js';
+import { renderCertificateAdd } from './pages/certificate-add.js';
 
 const app = document.getElementById('app');
 const tabbar = document.getElementById('tabbar');
@@ -38,6 +41,10 @@ function setupRoutes() {
   registerRoute('/articles/:id', (container, params) => renderArticleDetail(container, params));
   registerRoute('/profile', (container) => renderProfile(container));
   registerRoute('/my-registrations', (container) => renderMyRegistrations(container));
+  registerRoute('/personal-info', (container) => renderPersonalInfo(container));
+  registerRoute('/my-certificates', (container) => renderMyCertificates(container));
+  registerRoute('/certificate/add', (container) => renderCertificateAdd(container));
+  registerRoute('/certificate/:id', (container, params) => renderCertificateDetail(container, params));
   registerRoute('/about', (container) => renderAbout(container));
 }
 

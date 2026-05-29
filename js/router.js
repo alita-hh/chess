@@ -1,5 +1,5 @@
 const TAB_ROUTES = ['home', 'activities', 'profile'];
-const AUTH_REQUIRED = ['profile', 'my-registrations'];
+const AUTH_REQUIRED = ['profile', 'my-registrations', 'my-certificates', 'personal-info', 'certificate'];
 
 const routes = [];
 
@@ -44,7 +44,7 @@ export function back(fallback = '#/home') {
 export function getTabFromRoute(path) {
   const segment = path.replace(/^#\/?/, '').split('/')[0];
   if (segment === 'activities' || segment === 'activity') return 'activities';
-  if (segment === 'profile' || segment === 'my-registrations') return 'profile';
+  if (segment === 'profile' || segment === 'my-registrations' || segment === 'my-certificates' || segment === 'personal-info' || segment === 'certificate') return 'profile';
   if (segment === 'home' || segment === '' || segment === 'login') return 'home';
   return null;
 }
@@ -63,7 +63,7 @@ export function requiresAuth(path) {
 
 export function shouldHideTabbar(path) {
   const segment = path.replace(/^#\/?/, '').split('/')[0];
-  const hidden = ['login', 'activity', 'news', 'articles', 'about', 'my-registrations'];
+  const hidden = ['login', 'activity', 'news', 'articles', 'about', 'my-registrations', 'my-certificates', 'personal-info', 'certificate'];
   return hidden.includes(segment);
 }
 

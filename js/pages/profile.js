@@ -1,6 +1,6 @@
 import { store } from '../store.js';
 import { navigate } from '../router.js';
-import { showToast, showModal } from '../ui.js';
+import { showToast, showModal, escapeHtml } from '../ui.js';
 
 export function renderProfile(container) {
   const user = store.getUser();
@@ -10,14 +10,20 @@ export function renderProfile(container) {
   }
 
   const initial = user.nickname.charAt(0);
+  const avatarHtml = user.avatarPhoto
+    ? `<img src="${user.avatarPhoto}" alt="" class="profile-avatar-img">`
+    : initial;
+  const profileComplete = store.isProfileComplete(user);
 
   container.innerHTML = `
     <div class="page has-tabbar">
       <div class="profile-header">
-        <div class="profile-avatar">${initial}</div>
-        <div>
-          <div class="profile-name">${user.nickname}</div>
+        <div class="profile-avatar">${avatarHtml}</div>
+        <div class="profile-header-info">
+          <div class="profile-name">${escapeHtml(user.nickname)}</div>
           <div class="profile-phone">${store.maskPhone(user.phone)}</div>
+          ${user.realName ? `<div class="profile-real-name">${escapeHtml(user.realName)}</div>` : ''}
+          <button class="profile-edit-link" id="edit-profile">${profileComplete ? '编辑资料 ›' : '完善个人信息 ›'}</button>
         </div>
       </div>
       <div class="page-content">
@@ -26,6 +32,13 @@ export function renderProfile(container) {
             <div class="menu-item-left">
               <span class="menu-item-icon">📋</span>
               <span class="menu-item-label">我的报名</span>
+            </div>
+            <span class="menu-item-arrow">›</span>
+          </div>
+          <div class="menu-item" id="menu-certs">
+            <div class="menu-item-left">
+              <span class="menu-item-icon">🏅</span>
+              <span class="menu-item-label">我的证书</span>
             </div>
             <span class="menu-item-arrow">›</span>
           </div>
@@ -48,7 +61,9 @@ export function renderProfile(container) {
     </div>
   `;
 
+  container.querySelector('#edit-profile').addEventListener('click', () => navigate('#/personal-info'));
   container.querySelector('#menu-regs').addEventListener('click', () => navigate('#/my-registrations'));
+  container.querySelector('#menu-certs').addEventListener('click', () => navigate('#/my-certificates'));
   container.querySelector('#menu-about').addEventListener('click', () => navigate('#/about'));
 
   container.querySelector('#menu-logout').addEventListener('click', async () => {

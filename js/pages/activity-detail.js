@@ -1,7 +1,8 @@
 import { getActivityById } from '../mock.js';
 import { getActivityStatus, getEnrolledCount, getRemainingSlots, store } from '../store.js';
 import { navigate, back } from '../router.js';
-import { showToast, statusBadge, renderParagraphs, escapeHtml } from '../ui.js';
+import { showToast, showModal, statusBadge, renderParagraphs, escapeHtml } from '../ui.js';
+import { checkActivityLevelGate } from '../certification.js';
 
 function renderGroupList(groupList) {
   if (!groupList || groupList.length === 0) {
@@ -71,6 +72,12 @@ export function renderActivityDetail(container, { id }) {
             <span class="detail-info-label">详细地址</span>
             <span class="detail-info-value clickable" id="copy-address">${escapeHtml(activity.address)} 📋</span>
           </div>
+          ${activity.minLevelRequired ? `
+          <div class="detail-info-item">
+            <span class="detail-info-label">棋力要求</span>
+            <span class="detail-info-value">${escapeHtml(activity.minLevelRequired)} 及以上</span>
+          </div>
+          ` : ''}
           <div class="detail-info-item">
             <span class="detail-info-label">报名费用</span>
             <span class="detail-info-value">${activity.fee === 0 ? '免费' : '¥' + activity.fee}</span>
@@ -130,9 +137,23 @@ export function renderActivityDetail(container, { id }) {
 
   const registerBtn = container.querySelector('#register-btn');
   if (!ctaDisabled) {
-    registerBtn.addEventListener('click', () => {
+    registerBtn.addEventListener('click', async () => {
       if (!store.isLoggedIn()) {
         navigate('#/login?redirect=' + encodeURIComponent('#/activity/' + id + '/register'));
+        return;
+      }
+      const gate = checkActivityLevelGate(store.getUser(), activity);
+      if (!gate.ok) {
+        const body = gate.currentLevel
+          ? `本活动要求 <strong>${escapeHtml(activity.minLevelRequired)}</strong> 及以上等级，您当前为 <strong>${escapeHtml(gate.currentLevel)}</strong>，请先完成等级认证。`
+          : `本活动要求 <strong>${escapeHtml(activity.minLevelRequired)}</strong> 及以上等级，您尚未完成等级认证。`;
+        const go = await showModal({
+          title: '等级未达标',
+          body,
+          confirmText: '去认证',
+          cancelText: '取消',
+        });
+        if (go) navigate('#/certification/index');
         return;
       }
       navigate('#/activity/' + id + '/register');

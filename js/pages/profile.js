@@ -23,6 +23,7 @@ export function renderProfile(container) {
           <div class="profile-name">${escapeHtml(user.nickname)}</div>
           <div class="profile-phone">${store.maskPhone(user.phone)}</div>
           ${user.realName ? `<div class="profile-real-name">${escapeHtml(user.realName)}</div>` : ''}
+          ${user.currentLevel ? `<div class="profile-level">🎯 ${escapeHtml(user.currentLevel)}</div>` : ''}
           <button class="profile-edit-link" id="edit-profile">${profileComplete ? '编辑资料 ›' : '完善个人信息 ›'}</button>
         </div>
       </div>
@@ -32,6 +33,13 @@ export function renderProfile(container) {
             <div class="menu-item-left">
               <span class="menu-item-icon">📋</span>
               <span class="menu-item-label">我的报名</span>
+            </div>
+            <span class="menu-item-arrow">›</span>
+          </div>
+          <div class="menu-item" id="menu-certification">
+            <div class="menu-item-left">
+              <span class="menu-item-icon">🎯</span>
+              <span class="menu-item-label">等级认证</span>
             </div>
             <span class="menu-item-arrow">›</span>
           </div>
@@ -63,6 +71,7 @@ export function renderProfile(container) {
 
   container.querySelector('#edit-profile').addEventListener('click', () => navigate('#/personal-info'));
   container.querySelector('#menu-regs').addEventListener('click', () => navigate('#/my-registrations'));
+  container.querySelector('#menu-certification').addEventListener('click', () => navigate('#/certification/index'));
   container.querySelector('#menu-certs').addEventListener('click', () => navigate('#/my-certificates'));
   container.querySelector('#menu-about').addEventListener('click', () => navigate('#/about'));
 

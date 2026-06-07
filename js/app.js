@@ -18,6 +18,9 @@ import { renderAbout } from './pages/about.js';
 import { renderPersonalInfo } from './pages/personal-info.js';
 import { renderMyCertificates, renderCertificateDetail } from './pages/my-certificates.js';
 import { renderCertificateAdd } from './pages/certificate-add.js';
+import { renderCertificationIndex } from './pages/certification-index.js';
+import { renderCertificationApply } from './pages/certification-apply.js';
+import { renderCertificationDetail } from './pages/certification-detail.js';
 
 const app = document.getElementById('app');
 const tabbar = document.getElementById('tabbar');
@@ -46,6 +49,9 @@ function setupRoutes() {
   registerRoute('/certificate/add', (container) => renderCertificateAdd(container));
   registerRoute('/certificate/:id', (container, params) => renderCertificateDetail(container, params));
   registerRoute('/about', (container) => renderAbout(container));
+  registerRoute('/certification/index', (container) => renderCertificationIndex(container));
+  registerRoute('/certification/apply', (container) => renderCertificationApply(container));
+  registerRoute('/certification/detail/:id', (container, params) => renderCertificationDetail(container, params));
 }
 
 function updateTabbar(hash) {

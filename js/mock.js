@@ -26,7 +26,7 @@ export const gridItems = [
   { id: 1, icon: '🏆', label: '赛事报名', action: 'route', route: '#/activities' },
   { id: 9, icon: '📰', label: '实时资讯', action: 'route', route: '#/articles' },
   { id: 2, icon: '📖', label: '协会简介', action: 'route', route: '#/about' },
-  { id: 8, icon: '🎯', label: '等级评定', action: 'toast', message: '功能开发中，敬请期待' },
+  { id: 8, icon: '🎯', label: '等级评定', action: 'route', route: '#/certification/index', requireAuth: true },
 ];
 
 export const activities = [
@@ -44,7 +44,8 @@ export const activities = [
     enrolled: 38,
     organizer: '朝阳区象棋协会',
     registerDeadline: '2026-06-10 23:59',
-    rules: '一、参赛资格\n面向朝阳区象棋爱好者，年龄不限，身体健康。\n\n二、竞赛办法\n采用积分制，共赛七轮，每轮50分钟，每步30秒加秒。\n\n三、奖励办法\n各组前三名颁发奖杯及证书，第四至八名颁发优胜奖。',
+    minLevelRequired: '二级棋士',
+    rules: '一、参赛资格\n面向朝阳区象棋爱好者，须持有二级棋士及以上等级认证，年龄不限，身体健康。\n\n二、竞赛办法\n采用积分制，共赛七轮，每轮50分钟，每步30秒加秒。\n\n三、奖励办法\n各组前三名颁发奖杯及证书，第四至八名颁发优胜奖。',
     supplementaryRules: '1. 参赛选手须提前15分钟到场签到，迟到15分钟视为弃权。\n2. 比赛期间禁止使用手机等电子设备，违者判负。\n3. 组委会保留对竞赛规则的最终解释权。',
     groupList: [
       { name: '成人组 A 组', members: ['王明', '李强', '张伟', '刘洋', '陈磊', '赵军', '孙浩', '周杰'] },

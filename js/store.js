@@ -4,6 +4,7 @@ const STORAGE_KEYS = {
   ACTIVITY_OVERRIDES: 'xq_activity_overrides',
   TOKEN: 'xq_token',
   CERTIFICATES: 'xq_certificates',
+  CERTIFICATIONS: 'xq_certifications',
 };
 
 function readJSON(key, fallback) {
@@ -156,6 +157,46 @@ export const store = {
 
   generateCertId() {
     return 'CERT' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase();
+  },
+
+  generateCertificationId() {
+    return 'CERTAPP' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 6).toUpperCase();
+  },
+
+  getCertifications() {
+    return readJSON(STORAGE_KEYS.CERTIFICATIONS, []);
+  },
+
+  getCertificationsByUser(phone) {
+    return this.getCertifications()
+      .filter(c => c.userId === phone)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  },
+
+  getCertificationById(id) {
+    return this.getCertifications().find(c => c.id === id) || null;
+  },
+
+  addCertification(record) {
+    const list = this.getCertifications();
+    list.unshift(record);
+    writeJSON(STORAGE_KEYS.CERTIFICATIONS, list);
+    return record;
+  },
+
+  updateCertification(id, fields) {
+    const list = this.getCertifications();
+    const idx = list.findIndex(c => c.id === id);
+    if (idx === -1) return null;
+    list[idx] = { ...list[idx], ...fields, updatedAt: new Date().toISOString() };
+    writeJSON(STORAGE_KEYS.CERTIFICATIONS, list);
+    return list[idx];
+  },
+
+  hasPendingCertification(phone) {
+    return this.getCertificationsByUser(phone).some(c =>
+      c.status === 0 || c.status === 2
+    );
   },
 
   readImageFile(file) {

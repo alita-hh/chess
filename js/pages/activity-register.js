@@ -1,7 +1,8 @@
 import { getActivityById } from '../mock.js';
 import { store, getActivityStatus, getEnrolledCount, getRemainingSlots } from '../store.js';
 import { navigate, back } from '../router.js';
-import { showToast, escapeHtml } from '../ui.js';
+import { showToast, showModal, escapeHtml } from '../ui.js';
+import { checkActivityLevelGate } from '../certification.js';
 
 export function renderActivityRegister(container, { id }) {
   const activity = getActivityById(id);
@@ -22,6 +23,23 @@ export function renderActivityRegister(container, { id }) {
   if (store.hasRegistered(activity.id, user.phone)) {
     showToast('您已报名该活动');
     navigate('#/activity/' + id);
+    return;
+  }
+
+  const gate = checkActivityLevelGate(user, activity);
+  if (!gate.ok) {
+    showModal({
+      title: '等级未达标',
+      body: gate.currentLevel
+        ? `本活动要求 ${activity.minLevelRequired} 及以上等级，您当前为 ${gate.currentLevel}，请先完成等级认证。`
+        : `本活动要求 ${activity.minLevelRequired} 及以上等级，您尚未完成等级认证。`,
+      confirmText: '去认证',
+      cancelText: '返回',
+    }).then(go => {
+      if (go) navigate('#/certification/index');
+      else navigate('#/activity/' + id);
+    });
+    container.innerHTML = `<div class="page"><div class="empty-state"><div class="empty-title">等级未达标</div></div></div>`;
     return;
   }
 

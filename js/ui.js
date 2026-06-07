@@ -36,6 +36,14 @@ export function showModal({ title, body, confirmText = '确定', cancelText = '�
   });
 }
 
+import { getDisplayStatus, CERT_DISPLAY_STATUS } from './certification.js';
+
+export function certificationDisplayBadge(backendStatus) {
+  const key = getDisplayStatus(backendStatus);
+  const info = CERT_DISPLAY_STATUS[key];
+  return `<span class="badge ${info.cls}">${info.label}</span>`;
+}
+
 export function certReviewBadge(status) {
   const map = {
     pending_first: { cls: 'badge-pending', text: '待初审' },

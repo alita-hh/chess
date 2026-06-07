@@ -54,3 +54,15 @@ export function getIdTypeLabel(value) {
 export function getGenderLabel(value) {
   return GENDERS.find(g => g.value === value)?.label || value;
 }
+
+/** 等级认证申请级别字典（rank 越大等级越高） */
+export const XQ_CERT_LEVELS = [
+  { value: 'level_3', label: '三级棋士', rank: 1 },
+  { value: 'level_2', label: '二级棋士', rank: 2 },
+  { value: 'level_1', label: '一级棋士', rank: 3 },
+  { value: 'master', label: '棋协大师', rank: 4 },
+];
+
+export function getApplyLevelLabel(value) {
+  return XQ_CERT_LEVELS.find(l => l.value === value)?.label || value;
+}
